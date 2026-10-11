@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-surface: #fcf9f3;
   --color-surface-dim: #dcdad4;
@@ -74,6 +76,32 @@
   --font-price-md: "Plus Jakarta Sans", sans-serif;
 }
 
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-background: #14110F;
+  --color-on-background: #F4EFEB;
+  --color-cream-bg: #14110F;
+  --color-cream-surface: #1C1714;
+  --color-cream-subtle: #251F1B;
+  --color-surface-container: #26201C;
+  --color-surface-container-low: #181412;
+  --color-surface-container-high: #2E2622;
+  --color-surface-container-highest: #382F2A;
+  --color-surface-container-lowest: #120F0D;
+  --color-espresso: #F4EFEB;
+  --color-on-surface: #EFE9E4;
+  --color-text-muted: #A8988F;
+  --color-border-soft: #382F2A;
+  --color-terracotta: #E07A5F;
+  --color-sage: #9BB090;
+  --color-primary-container: #241D19;
+  --color-secondary: #E07A5F;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--color-cream-bg);
@@ -81,6 +109,13 @@ body {
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 h1, h2, h3, .font-serif-heading {

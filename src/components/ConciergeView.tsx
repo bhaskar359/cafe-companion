@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MenuItem, ChatMessage, OrderPreview } from '../types/api.ts';
 import { api } from '../client/api.ts';
+import { ConciergeLoadingSkeleton } from './Skeleton.tsx';
 
 interface ConciergeViewProps {
   initialPrompt?: string;
@@ -132,28 +133,28 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
   const cartTotalPaise = cartSubtotalPaise + (cartItems.length > 0 ? 2000 : 0) + cartGstPaise;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 transition-colors duration-250">
       {/* Top Context & Sensor Bar */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8">
         <div className="space-y-1.5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ebe8e2] text-[#4f4540] font-label-sm text-xs uppercase tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#C66B4E]" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ebe8e2] dark:bg-[#2A231F] text-[#4f4540] dark:text-[#EFE9E4] font-label-sm text-xs uppercase tracking-wider border border-transparent dark:border-[#382F2A]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C66B4E] dark:bg-[#E07A5F]" />
             <span>Conversational Tasting Room &amp; Sensory Matchmaker</span>
           </div>
-          <h1 className="font-headline-lg text-2xl sm:text-3xl text-[#38271F] tracking-tight font-bold">
+          <h1 className="font-headline-lg text-2xl sm:text-3xl text-[#38271F] dark:text-[#F4EFEB] tracking-tight font-bold">
             Artisanal Flavor Dialogue
           </h1>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#FFFDF9] shadow-sm border border-[#E3DACE]/60">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#FFFDF9] dark:bg-[#1E1916] shadow-sm border border-[#E3DACE]/60 dark:border-[#382F2A]">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7B8C70] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7B8C70]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#7B8C70] dark:bg-[#9BB090] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#7B8C70] dark:bg-[#9BB090]" />
             </span>
-            <span className="font-label-md text-xs text-[#38271F] font-semibold">Cloud Run AI Concierge</span>
-            <span className="text-[#6E5E55] text-xs">•</span>
-            <span className="font-label-sm text-xs text-[#7B8C70] font-bold">Online (12ms)</span>
+            <span className="font-label-md text-xs text-[#38271F] dark:text-[#F4EFEB] font-semibold">Cloud Run AI Concierge</span>
+            <span className="text-[#6E5E55] dark:text-[#A8988F] text-xs">•</span>
+            <span className="font-label-sm text-xs text-[#7B8C70] dark:text-[#9BB090] font-bold">Online (12ms)</span>
           </div>
         </div>
       </div>
@@ -172,17 +173,17 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                   className={`flex items-start gap-3.5 ${isUser ? 'justify-end' : 'max-w-3xl'}`}
                 >
                   {!isUser && (
-                    <div className="w-9 h-9 rounded-full bg-[#38271F] text-[#F8F5EF] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                    <div className="w-9 h-9 rounded-full bg-[#38271F] dark:bg-[#E07A5F] text-[#F8F5EF] dark:text-[#14110F] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                       <span className="material-symbols-outlined text-base">neurology</span>
                     </div>
                   )}
 
                   <div className={`space-y-2 flex-1 ${isUser ? 'flex flex-col items-end max-w-xl' : ''}`}>
                     <div className="flex items-center gap-2">
-                      <span className="font-title-sm text-xs font-semibold text-[#38271F]">
+                      <span className="font-title-sm text-xs font-semibold text-[#38271F] dark:text-[#F4EFEB]">
                         {msg.authorName || (isUser ? 'You • Table 04' : 'Concierge Sravan')}
                       </span>
-                      <span className="font-label-sm text-[11px] text-[#6E5E55]">
+                      <span className="font-label-sm text-[11px] text-[#6E5E55] dark:text-[#A8988F]">
                         {msg.time || 'Just now'}
                       </span>
                     </div>
@@ -190,15 +191,15 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                     <div
                       className={`rounded-2xl p-5 shadow-sm text-sm ${
                         isUser
-                          ? 'bg-[#38271F] text-[#F8F5EF] rounded-tr-sm'
-                          : 'bg-[#FFFDF9] text-[#1c1c18] rounded-tl-sm border border-[#E3DACE]/60 space-y-3'
+                          ? 'bg-[#38271F] dark:bg-[#E07A5F] text-[#F8F5EF] dark:text-[#14110F] rounded-tr-sm font-medium'
+                          : 'bg-[#FFFDF9] dark:bg-[#1C1714] text-[#1c1c18] dark:text-[#EFE9E4] rounded-tl-sm border border-[#E3DACE]/60 dark:border-[#382F2A] space-y-3'
                       }`}
                     >
                       <p className="font-body-md text-xs sm:text-sm leading-relaxed">{msg.content}</p>
 
                       {!isUser && (
-                        <div className="flex items-center gap-2 pt-1 text-[#6E5E55] font-label-sm text-[11px]">
-                          <span className="material-symbols-outlined text-sm text-[#7B8C70]">verified</span>
+                        <div className="flex items-center gap-2 pt-1 text-[#6E5E55] dark:text-[#A8988F] font-label-sm text-[11px]">
+                          <span className="material-symbols-outlined text-sm text-[#7B8C70] dark:text-[#9BB090]">verified</span>
                           <span>Direct estate inventory synced (Chikmagalur &amp; Nilgiris)</span>
                         </div>
                       )}
@@ -209,43 +210,43 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                           {msg.recommendedItems.map(item => (
                             <div
                               key={item.id}
-                              className="group bg-[#fcf9f3] rounded-xl p-4 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between border border-[#E3DACE]/80"
+                              className="group bg-[#fcf9f3] dark:bg-[#251F1B] rounded-xl p-4 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between border border-[#E3DACE]/80 dark:border-[#382F2A]"
                             >
                               <div className="space-y-3">
-                                <div className="relative w-full h-36 rounded-lg overflow-hidden bg-[#ebe8e2]">
+                                <div className="relative w-full h-36 rounded-lg overflow-hidden bg-[#ebe8e2] dark:bg-[#2A231F]">
                                   <img
                                     src={item.imageUrl || 'https://lh3.googleusercontent.com/aida-public/AB6AXuCtHSxzNZabW1cjQmBNeRZb7bRZwLyVuCLzaSyt8KbNRpfbpO2Mzi-0ewqaoZ69Dan03IJS6SOamjFKG32Ta9xR-DdAYNTS2WQPHYCFCWXBmgWBuM88g8_Y6OM42x8cIc-Qj85YGRU4IK_UuOgewehyd1avaGFuKIJt7npUNDFBMJhdTmCoNVCKYXobnzjWzJr2srHLBsObCsZn2h2C_Pn3IFFsF49wTqk3iWPpV1hda9_MF50nPPSQ'}
                                     alt={item.name}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                   />
-                                  <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-[#38271F]/80 backdrop-blur-md text-[#F8F5EF] font-label-sm text-[10px]">
+                                  <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full bg-[#38271F]/80 dark:bg-[#14110F]/80 backdrop-blur-md text-[#F8F5EF] font-label-sm text-[10px]">
                                     {item.tags[0]?.toUpperCase() || 'SPECIALTY'}
                                   </span>
                                 </div>
 
                                 <div>
                                   <div className="flex items-baseline justify-between gap-2">
-                                    <h4 className="font-title-sm text-sm text-[#38271F] font-semibold leading-snug">
+                                    <h4 className="font-title-sm text-sm text-[#38271F] dark:text-[#F4EFEB] font-semibold leading-snug">
                                       {item.name}
                                     </h4>
-                                    <span className="font-price-md text-sm text-[#C66B4E] font-bold shrink-0">
+                                    <span className="font-price-md text-sm text-[#C66B4E] dark:text-[#E07A5F] font-bold shrink-0">
                                       ₹{item.pricePaise / 100}
                                     </span>
                                   </div>
-                                  <p className="font-label-sm text-[11px] text-[#6E5E55] mt-0.5">
+                                  <p className="font-label-sm text-[11px] text-[#6E5E55] dark:text-[#A8988F] mt-0.5">
                                     {item.roastOrigin || 'Single Origin Micro-Lot'}
                                   </p>
                                 </div>
 
-                                <p className="font-body-sm text-xs text-[#4f4540] line-clamp-2">
+                                <p className="font-body-sm text-xs text-[#4f4540] dark:text-[#A8988F] line-clamp-2">
                                   {item.description}
                                 </p>
 
                                 <div className="flex flex-wrap gap-1.5 pt-1">
-                                  <span className="px-2 py-0.5 rounded-md bg-[#ebe8e2] font-label-sm text-[10px] text-[#38271F]">
+                                  <span className="px-2 py-0.5 rounded-md bg-[#ebe8e2] dark:bg-[#2E2622] font-label-sm text-[10px] text-[#38271F] dark:text-[#EFE9E4]">
                                     Zero Refined Sugar
                                   </span>
-                                  <span className="px-2 py-0.5 rounded-md bg-[#d6e8c8] text-[#3c4b33] font-label-sm text-[10px] font-bold">
+                                  <span className="px-2 py-0.5 rounded-md bg-[#d6e8c8] dark:bg-[#202f19] text-[#3c4b33] dark:text-[#baccad] font-label-sm text-[10px] font-bold">
                                     In Budget
                                   </span>
                                 </div>
@@ -254,7 +255,7 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => handleAddFromRecommendation(item)}
-                                className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-[#38271F] text-[#F8F5EF] hover:bg-[#C66B4E] transition-colors font-label-md text-xs shadow-xs font-semibold cursor-pointer"
+                                className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-[#38271F] dark:bg-[#E07A5F] text-[#F8F5EF] dark:text-[#14110F] hover:bg-[#C66B4E] transition-colors font-label-md text-xs shadow-xs font-semibold cursor-pointer"
                               >
                                 <span className="material-symbols-outlined text-sm">add</span>
                                 <span>Add to Tray • ₹{item.pricePaise / 100}</span>
@@ -267,7 +268,7 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                   </div>
 
                   {isUser && (
-                    <div className="w-9 h-9 rounded-full bg-[#ebe8e2] flex items-center justify-center shrink-0 shadow-sm text-[#38271F] font-label-md text-xs font-bold mt-0.5">
+                    <div className="w-9 h-9 rounded-full bg-[#ebe8e2] dark:bg-[#2E2622] flex items-center justify-center shrink-0 shadow-sm text-[#38271F] dark:text-[#F4EFEB] font-label-md text-xs font-bold mt-0.5">
                       AM
                     </div>
                   )}
@@ -275,19 +276,8 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
               );
             })}
 
-            {isSending && (
-              <div className="flex items-start gap-3.5 max-w-xl">
-                <div className="w-9 h-9 rounded-full bg-[#38271F] text-[#F8F5EF] flex items-center justify-center shrink-0 shadow-sm mt-0.5">
-                  <span className="material-symbols-outlined text-base animate-spin">autorenew</span>
-                </div>
-                <div className="bg-[#FFFDF9] rounded-2xl p-4 shadow-sm border border-[#E3DACE]/60 flex items-center gap-3">
-                  <span className="w-2 h-2 rounded-full bg-[#C66B4E] animate-ping" />
-                  <span className="text-xs text-[#6E5E55]">
-                    Concierge Sravan is curating harvest notes with Gemini...
-                  </span>
-                </div>
-              </div>
-            )}
+            {/* Rich Skeleton while Concierge is curating */}
+            {isSending && <ConciergeLoadingSkeleton />}
 
             <div ref={chatEndRef} />
           </div>
@@ -295,10 +285,10 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
           {/* Suggested Inquiries Rail */}
           <div className="space-y-2 pt-2">
             <div className="flex items-center justify-between">
-              <span className="font-label-sm text-xs text-[#6E5E55] uppercase tracking-wider">
+              <span className="font-label-sm text-xs text-[#6E5E55] dark:text-[#A8988F] uppercase tracking-wider">
                 Suggested Inquiries
               </span>
-              <span className="font-label-sm text-xs text-[#C66B4E] font-semibold">Tap to ask</span>
+              <span className="font-label-sm text-xs text-[#C66B4E] dark:text-[#E07A5F] font-semibold">Tap to ask</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {[
@@ -310,9 +300,9 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                   key={chip.label}
                   type="button"
                   onClick={() => handleSendMessage(chip.prompt)}
-                  className="px-3.5 py-1.5 rounded-full bg-[#FFFDF9] hover:bg-[#EFE9DF] text-[#38271F] font-label-md text-xs shadow-xs transition-colors flex items-center gap-1.5 border border-[#E3DACE]/60 cursor-pointer"
+                  className="px-3.5 py-1.5 rounded-full bg-[#FFFDF9] dark:bg-[#1E1916] hover:bg-[#EFE9DF] dark:hover:bg-[#2E2622] text-[#38271F] dark:text-[#EFE9E4] font-label-md text-xs shadow-xs transition-colors flex items-center gap-1.5 border border-[#E3DACE]/60 dark:border-[#382F2A] cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-sm text-[#C66B4E]">{chip.icon}</span>
+                  <span className="material-symbols-outlined text-sm text-[#C66B4E] dark:text-[#E07A5F]">{chip.icon}</span>
                   <span>{chip.label}</span>
                 </button>
               ))}
@@ -322,7 +312,7 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                   setMessages([messages[0]]);
                   showToast('Reset Preferences', 'Flavor dialogue history cleared.');
                 }}
-                className="px-3 py-1.5 rounded-full bg-[#ebe8e2] hover:bg-[#e5e2dc] text-[#4f4540] font-label-sm text-xs transition-colors flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 rounded-full bg-[#ebe8e2] dark:bg-[#251F1B] hover:bg-[#e5e2dc] dark:hover:bg-[#2E2622] text-[#4f4540] dark:text-[#A8988F] font-label-sm text-xs transition-colors flex items-center gap-1 cursor-pointer border border-transparent dark:border-[#382F2A]"
               >
                 <span className="material-symbols-outlined text-xs">restart_alt</span>
                 <span>Reset</span>
@@ -331,7 +321,7 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
           </div>
 
           {/* Input Composer */}
-          <div className="bg-[#FFFDF9] rounded-2xl p-3 shadow-md border border-[#E3DACE]/80 space-y-2">
+          <div className="bg-[#FFFDF9] dark:bg-[#1E1916] rounded-2xl p-3 shadow-md border border-[#E3DACE]/80 dark:border-[#382F2A] space-y-2">
             <form
               onSubmit={e => {
                 e.preventDefault();
@@ -345,7 +335,7 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                   setInputText('What is something refreshing and low-sugar under ₹200?');
                 }}
                 aria-label="Preset prompt"
-                className="w-10 h-10 rounded-xl flex items-center justify-center text-[#6E5E55] hover:text-[#38271F] hover:bg-[#ebe8e2] transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-xl flex items-center justify-center text-[#6E5E55] dark:text-[#A8988F] hover:text-[#38271F] dark:hover:text-[#F4EFEB] hover:bg-[#ebe8e2] dark:hover:bg-[#2E2622] transition-colors cursor-pointer"
               >
                 <span className="material-symbols-outlined text-xl">mic</span>
               </button>
@@ -355,23 +345,23 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                 value={inputText}
                 onChange={e => setInputText(e.target.value)}
                 placeholder="Type your craving or taste preference..."
-                className="flex-1 bg-transparent border-0 outline-none font-body-md text-sm text-[#38271F] placeholder:text-[#6E5E55]/60 px-2"
+                className="flex-1 bg-transparent border-0 outline-none font-body-md text-sm text-[#38271F] dark:text-[#F4EFEB] placeholder:text-[#6E5E55]/60 dark:placeholder:text-[#A8988F]/60 px-2"
               />
 
               <button
                 type="submit"
                 disabled={isSending || !inputText.trim()}
                 aria-label="Send message"
-                className="h-10 px-4 rounded-xl bg-[#C66B4E] hover:bg-[#97472d] text-white flex items-center justify-center gap-1.5 transition-colors shadow-xs font-label-md text-xs font-semibold disabled:opacity-50 cursor-pointer"
+                className="h-10 px-4 rounded-xl bg-[#C66B4E] dark:bg-[#E07A5F] hover:bg-[#97472d] text-white dark:text-[#14110F] flex items-center justify-center gap-1.5 transition-colors shadow-xs font-label-md text-xs font-semibold disabled:opacity-50 cursor-pointer"
               >
                 <span>Send</span>
                 <span className="material-symbols-outlined text-base">near_me</span>
               </button>
             </form>
 
-            <div className="flex items-center justify-between px-2 pt-1 font-label-sm text-[11px] text-[#6E5E55]">
+            <div className="flex items-center justify-between px-2 pt-1 font-label-sm text-[11px] text-[#6E5E55] dark:text-[#A8988F]">
               <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-xs text-[#7B8C70]">auto_awesome</span>
+                <span className="material-symbols-outlined text-xs text-[#7B8C70] dark:text-[#9BB090]">auto_awesome</span>
                 <span>Powered by Gemini 3.8 Flash • Menu synced in real-time</span>
               </span>
               <span className="hidden sm:inline">Press Enter to chat</span>
@@ -382,19 +372,19 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
         {/* Right Aside: Tasting Profile & Order Panel (4 cols) */}
         <aside className="lg:col-span-4 flex flex-col space-y-6">
           <div className="flex items-center justify-between pb-1">
-            <h2 className="font-headline-sm text-lg text-[#38271F] font-semibold">
+            <h2 className="font-headline-sm text-lg text-[#38271F] dark:text-[#F4EFEB] font-semibold">
               Your Tasting Profile &amp; Order
             </h2>
-            <span className="px-2.5 py-0.5 rounded-full bg-[#FFFDF9] font-label-sm text-xs text-[#6E5E55] shadow-xs border border-[#E3DACE]/60">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#FFFDF9] dark:bg-[#1E1916] font-label-sm text-xs text-[#6E5E55] dark:text-[#A8988F] shadow-xs border border-[#E3DACE]/60 dark:border-[#382F2A]">
               Live Context
             </span>
           </div>
 
           {/* Active Sensory Filter Card */}
-          <div className="bg-[#FFFDF9] rounded-2xl p-5 shadow-sm border border-[#E3DACE]/60 space-y-4">
+          <div className="bg-[#FFFDF9] dark:bg-[#1C1714] rounded-2xl p-5 shadow-sm border border-[#E3DACE]/60 dark:border-[#382F2A] space-y-4">
             <div className="flex items-center justify-between">
-              <span className="font-title-sm text-sm text-[#38271F] font-semibold flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-base text-[#C66B4E]">tune</span>
+              <span className="font-title-sm text-sm text-[#38271F] dark:text-[#F4EFEB] font-semibold flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-base text-[#C66B4E] dark:text-[#E07A5F]">tune</span>
                 Active Sensory Filter
               </span>
               <button
@@ -402,36 +392,36 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                   setSensoryTemp(sensoryTemp.includes('Cold') ? 'Hot / Manual Drip' : 'Cold / Iced');
                   showToast('Filter Updated', `Serving temperature set to ${sensoryTemp}`);
                 }}
-                className="text-[#C66B4E] font-label-sm text-xs hover:underline cursor-pointer font-semibold"
+                className="text-[#C66B4E] dark:text-[#E07A5F] font-label-sm text-xs hover:underline cursor-pointer font-semibold"
               >
                 Toggle
               </button>
             </div>
 
             <div className="space-y-3 font-body-sm text-xs">
-              <div className="flex items-center justify-between py-1 border-b border-[#E3DACE]/30">
-                <span className="text-[#6E5E55]">Serving Temperature</span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ebe8e2] text-[#38271F] font-label-md text-xs font-semibold">
-                  <span className="material-symbols-outlined text-xs text-[#97472d]">ac_unit</span>
+              <div className="flex items-center justify-between py-1 border-b border-[#E3DACE]/30 dark:border-[#382F2A]/60">
+                <span className="text-[#6E5E55] dark:text-[#A8988F]">Serving Temperature</span>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ebe8e2] dark:bg-[#2A231F] text-[#38271F] dark:text-[#EFE9E4] font-label-md text-xs font-semibold">
+                  <span className="material-symbols-outlined text-xs text-[#97472d] dark:text-[#E07A5F]">ac_unit</span>
                   {sensoryTemp}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-1 border-b border-[#E3DACE]/30">
-                <span className="text-[#6E5E55]">Sweetness Degree</span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ebe8e2] text-[#38271F] font-label-md text-xs font-semibold">
+              <div className="flex items-center justify-between py-1 border-b border-[#E3DACE]/30 dark:border-[#382F2A]/60">
+                <span className="text-[#6E5E55] dark:text-[#A8988F]">Sweetness Degree</span>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ebe8e2] dark:bg-[#2A231F] text-[#38271F] dark:text-[#EFE9E4] font-label-md text-xs font-semibold">
                   {sweetnessLevel}
                 </span>
               </div>
-              <div className="flex items-center justify-between py-1 border-b border-[#E3DACE]/30">
-                <span className="text-[#6E5E55]">Milk Base</span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ebe8e2] text-[#38271F] font-label-md text-xs font-semibold">
+              <div className="flex items-center justify-between py-1 border-b border-[#E3DACE]/30 dark:border-[#382F2A]/60">
+                <span className="text-[#6E5E55] dark:text-[#A8988F]">Milk Base</span>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#ebe8e2] dark:bg-[#2A231F] text-[#38271F] dark:text-[#EFE9E4] font-label-md text-xs font-semibold">
                   {milkBase}
                 </span>
               </div>
               <div className="flex items-center justify-between py-1">
-                <span className="text-[#6E5E55]">Dietary Classification</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#d6e8c8] text-[#3c4b33] font-label-sm text-xs font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#7B8C70]" />
+                <span className="text-[#6E5E55] dark:text-[#A8988F]">Dietary Classification</span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#d6e8c8] dark:bg-[#202f19] text-[#3c4b33] dark:text-[#baccad] font-label-sm text-xs font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#7B8C70] dark:bg-[#9BB090]" />
                   {isVegetarian ? '100% Vegetarian' : 'Custom'}
                 </span>
               </div>
@@ -439,60 +429,60 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
           </div>
 
           {/* Budget Guard Indicator */}
-          <div className="bg-[#FFFDF9] rounded-2xl p-5 shadow-sm border border-[#E3DACE]/60 space-y-3">
+          <div className="bg-[#FFFDF9] dark:bg-[#1C1714] rounded-2xl p-5 shadow-sm border border-[#E3DACE]/60 dark:border-[#382F2A] space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-base text-[#7B8C70]">payments</span>
-                <span className="font-title-sm text-sm text-[#38271F] font-semibold">Budget Guard</span>
+                <span className="material-symbols-outlined text-base text-[#7B8C70] dark:text-[#9BB090]">payments</span>
+                <span className="font-title-sm text-sm text-[#38271F] dark:text-[#F4EFEB] font-semibold">Budget Guard</span>
               </div>
-              <span className="font-label-md text-xs text-[#38271F] font-bold">₹{maxBudget} max / drink</span>
+              <span className="font-label-md text-xs text-[#38271F] dark:text-[#F4EFEB] font-bold">₹{maxBudget} max / drink</span>
             </div>
 
             <div className="space-y-1.5">
-              <div className="w-full h-2.5 rounded-full bg-[#f0eee8] overflow-hidden p-0.5">
-                <div className="h-full rounded-full bg-[#7B8C70] transition-all duration-700" style={{ width: '87.5%' }} />
+              <div className="w-full h-2.5 rounded-full bg-[#f0eee8] dark:bg-[#26201C] overflow-hidden p-0.5">
+                <div className="h-full rounded-full bg-[#7B8C70] dark:bg-[#9BB090] transition-all duration-700" style={{ width: '87.5%' }} />
               </div>
-              <div className="flex items-center justify-between text-[#6E5E55] font-label-sm text-[11px]">
+              <div className="flex items-center justify-between text-[#6E5E55] dark:text-[#A8988F] font-label-sm text-[11px]">
                 <span>Selected match: ₹175</span>
-                <span className="text-[#7B8C70] font-bold">₹25 buffer left</span>
+                <span className="text-[#7B8C70] dark:text-[#9BB090] font-bold">₹25 buffer left</span>
               </div>
             </div>
           </div>
 
           {/* Active Tasting Tray / Quick Cart */}
-          <div className="bg-[#FFFDF9] rounded-2xl p-5 shadow-sm border border-[#E3DACE]/60 space-y-4">
+          <div className="bg-[#FFFDF9] dark:bg-[#1C1714] rounded-2xl p-5 shadow-sm border border-[#E3DACE]/60 dark:border-[#382F2A] space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="font-title-sm text-sm text-[#38271F] font-semibold">Tasting Tray</span>
-                <span className="w-5 h-5 rounded-full bg-[#ebe8e2] text-[#38271F] font-label-sm text-xs flex items-center justify-center font-bold">
+                <span className="font-title-sm text-sm text-[#38271F] dark:text-[#F4EFEB] font-semibold">Tasting Tray</span>
+                <span className="w-5 h-5 rounded-full bg-[#ebe8e2] dark:bg-[#2E2622] text-[#38271F] dark:text-[#F4EFEB] font-label-sm text-xs flex items-center justify-center font-bold">
                   {cartItems.reduce((acc, c) => acc + c.quantity, 0)}
                 </span>
               </div>
-              <span className="font-label-sm text-xs text-[#6E5E55]">Table 04 Express</span>
+              <span className="font-label-sm text-xs text-[#6E5E55] dark:text-[#A8988F]">Table 04 Express</span>
             </div>
 
             {/* Tray Items */}
             <div className="space-y-3">
               {cartItems.length === 0 ? (
-                <div className="p-4 rounded-xl bg-[#f6f3ed] text-center text-xs text-[#6E5E55]">
+                <div className="p-4 rounded-xl bg-[#f6f3ed] dark:bg-[#251F1B] text-center text-xs text-[#6E5E55] dark:text-[#A8988F]">
                   Your tray is currently empty. Ask the concierge or explore the seasonal carte to add items.
                 </div>
               ) : (
                 cartItems.map((cartItem, idx) => (
-                  <div key={idx} className="flex items-start justify-between gap-3 p-2.5 rounded-xl bg-[#f6f3ed]">
+                  <div key={idx} className="flex items-start justify-between gap-3 p-2.5 rounded-xl bg-[#f6f3ed] dark:bg-[#251F1B] border border-transparent dark:border-[#382F2A]/60">
                     <div className="space-y-0.5 min-w-0">
-                      <h4 className="font-title-sm text-xs text-[#38271F] font-semibold truncate">
+                      <h4 className="font-title-sm text-xs text-[#38271F] dark:text-[#F4EFEB] font-semibold truncate">
                         {cartItem.item.name}
                       </h4>
-                      <p className="font-body-sm text-[11px] text-[#6E5E55]">
+                      <p className="font-body-sm text-[11px] text-[#6E5E55] dark:text-[#A8988F]">
                         {cartItem.customizations?.[0] || 'Single Estate Harvest'}
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="font-price-md text-xs text-[#38271F] font-bold">
+                      <span className="font-price-md text-xs text-[#38271F] dark:text-[#F4EFEB] font-bold">
                         ₹{(cartItem.item.pricePaise * cartItem.quantity) / 100}
                       </span>
-                      <span className="block font-label-sm text-[10px] text-[#6E5E55]">Qty: {cartItem.quantity}</span>
+                      <span className="block font-label-sm text-[10px] text-[#6E5E55] dark:text-[#A8988F]">Qty: {cartItem.quantity}</span>
                     </div>
                   </div>
                 ))
@@ -502,18 +492,18 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
             {/* Breakdown */}
             {cartItems.length > 0 && (
               <>
-                <div className="pt-2 space-y-1.5 font-body-sm text-xs border-t border-[#E3DACE]/40">
-                  <div className="flex items-center justify-between text-[#6E5E55]">
+                <div className="pt-2 space-y-1.5 font-body-sm text-xs border-t border-[#E3DACE]/40 dark:border-[#382F2A]">
+                  <div className="flex items-center justify-between text-[#6E5E55] dark:text-[#A8988F]">
                     <span>Item Subtotal</span>
-                    <span className="text-[#38271F] font-medium">₹{cartSubtotalPaise / 100}</span>
+                    <span className="text-[#38271F] dark:text-[#F4EFEB] font-medium">₹{cartSubtotalPaise / 100}</span>
                   </div>
-                  <div className="flex items-center justify-between text-[#6E5E55]">
+                  <div className="flex items-center justify-between text-[#6E5E55] dark:text-[#A8988F]">
                     <span>Fair-Trade &amp; GST (5%)</span>
-                    <span className="text-[#38271F] font-medium">₹{(2000 + cartGstPaise) / 100}</span>
+                    <span className="text-[#38271F] dark:text-[#F4EFEB] font-medium">₹{(2000 + cartGstPaise) / 100}</span>
                   </div>
-                  <div className="flex items-center justify-between pt-2 border-t border-[#E3DACE]/40">
-                    <span className="font-title-md text-sm text-[#38271F] font-bold">Total Amount</span>
-                    <span className="font-price-lg text-base text-[#C66B4E] font-bold">
+                  <div className="flex items-center justify-between pt-2 border-t border-[#E3DACE]/40 dark:border-[#382F2A]">
+                    <span className="font-title-md text-sm text-[#38271F] dark:text-[#F4EFEB] font-bold">Total Amount</span>
+                    <span className="font-price-lg text-base text-[#C66B4E] dark:text-[#E07A5F] font-bold">
                       ₹{cartTotalPaise / 100}
                     </span>
                   </div>
@@ -522,7 +512,7 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
                 <button
                   type="button"
                   onClick={onProceedToReview}
-                  className="w-full py-3.5 px-4 rounded-xl bg-[#C66B4E] hover:bg-[#97472d] text-white font-title-sm text-xs transition-all duration-200 flex items-center justify-center gap-2 shadow-xs font-semibold cursor-pointer group"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#C66B4E] dark:bg-[#E07A5F] hover:bg-[#97472d] text-white dark:text-[#14110F] font-title-sm text-xs transition-all duration-200 flex items-center justify-center gap-2 shadow-xs font-semibold cursor-pointer group"
                 >
                   <span>Review in Smart Order</span>
                   <span className="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">
@@ -534,12 +524,12 @@ export const ConciergeView: React.FC<ConciergeViewProps> = ({
           </div>
 
           {/* System Resilience Banner */}
-          <div className="p-4 rounded-xl bg-[#ebe8e2] text-[#4f4540] space-y-1.5 border border-[#E3DACE]/40">
-            <div className="flex items-center gap-2 text-[#38271F] font-label-md text-xs font-semibold">
-              <span className="material-symbols-outlined text-sm text-[#7B8C70]">cloud_done</span>
+          <div className="p-4 rounded-xl bg-[#ebe8e2] dark:bg-[#251F1B] text-[#4f4540] dark:text-[#EFE9E4] space-y-1.5 border border-[#E3DACE]/40 dark:border-[#382F2A]">
+            <div className="flex items-center gap-2 text-[#38271F] dark:text-[#F4EFEB] font-label-md text-xs font-semibold">
+              <span className="material-symbols-outlined text-sm text-[#7B8C70] dark:text-[#9BB090]">cloud_done</span>
               <span>Zero-Latency Offline Fallback</span>
             </div>
-            <p className="font-body-sm text-[11px] text-[#6E5E55] leading-relaxed">
+            <p className="font-body-sm text-[11px] text-[#6E5E55] dark:text-[#A8988F] leading-relaxed">
               Offline fallback available: All recommendations link directly to physical kitchen inventory without latency.
             </p>
           </div>

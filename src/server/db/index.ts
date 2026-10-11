@@ -150,7 +150,12 @@ class DatabaseRepository {
     try {
       this.pool = new Pool({
         connectionString: dbUrl,
-        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
+        connectionTimeoutMillis: 5000
+      });
+
+      this.pool.on('error', (err) => {
+        console.warn('[DB] Unexpected error on idle PostgreSQL client:', err.message);
       });
 
       const client = await this.pool.connect();

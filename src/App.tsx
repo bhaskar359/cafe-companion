@@ -21,6 +21,31 @@ export default function App() {
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
   const [conciergePrompt, setConciergePrompt] = useState<string | undefined>(undefined);
 
+  // Dark mode state with persistence & system preference fallback
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('cafe_theme');
+      if (saved) return saved === 'dark';
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('cafe_theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('cafe_theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(prev => !prev);
+  };
+
   // Initialize cart with 2 realistic items matching Stitch design (2 items · ₹350 + ₹30 GST = ₹380)
   const [cartItems, setCartItems] = useState<Array<{ item: MenuItem; quantity: number; customizations?: string[] }>>([]);
 
@@ -121,19 +146,19 @@ export default function App() {
   const cartTotalRupees = (cartSubtotalPaise + cartGstPaise) / 100;
 
   return (
-    <div className="min-h-screen bg-[#F8F5EF] text-[#1c1c18] flex flex-col font-sans selection:bg-[#ffdbd0] selection:text-[#38271F]">
+    <div className="min-h-screen bg-[#F8F5EF] dark:bg-[#14110F] text-[#1c1c18] dark:text-[#EFE9E4] flex flex-col font-sans selection:bg-[#ffdbd0] dark:selection:bg-[#E07A5F]/30 selection:text-[#38271F] dark:selection:text-[#F4EFEB] transition-colors duration-250">
       {/* Toast Notification (Fixed Floating Bottom-Right) */}
       <div
-        className={`fixed bottom-8 right-8 z-50 flex items-center gap-3.5 px-5 py-3.5 rounded-xl bg-[#38271F] text-[#F8F5EF] shadow-xl transition-all duration-300 ${
+        className={`fixed bottom-8 right-8 z-50 flex items-center gap-3.5 px-5 py-3.5 rounded-xl bg-[#38271F] dark:bg-[#251F1B] text-[#F8F5EF] dark:text-[#F4EFEB] shadow-xl border border-transparent dark:border-[#382F2A] transition-all duration-300 ${
           toast.show ? 'opacity-100 translate-y-0' : 'opacity-0 pointer-events-none translate-y-4'
         }`}
       >
-        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#7B8C70] text-white text-xs">
+        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#7B8C70] dark:bg-[#9BB090] text-white dark:text-[#14110F] text-xs">
           <span className="material-symbols-outlined text-sm font-bold">done</span>
         </span>
         <div className="flex flex-col">
-          <span className="font-title-sm text-xs text-[#FFFDF9] font-bold leading-none">{toast.title}</span>
-          <span className="font-body-sm text-[11px] text-[#dcdad4] mt-0.5">{toast.subtitle}</span>
+          <span className="font-title-sm text-xs text-[#FFFDF9] dark:text-[#F4EFEB] font-bold leading-none">{toast.title}</span>
+          <span className="font-body-sm text-[11px] text-[#dcdad4] dark:text-[#A8988F] mt-0.5">{toast.subtitle}</span>
         </div>
       </div>
 
@@ -143,10 +168,12 @@ export default function App() {
         setActiveTab={setActiveTab}
         cartItemCount={cartItemCount}
         cartTotalRupees={cartTotalRupees}
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
       />
 
       {/* Main View Shell */}
-      <main className="w-full pt-20 bg-[#F8F5EF] min-h-screen flex-1 flex flex-col">
+      <main className="w-full pt-20 bg-[#F8F5EF] dark:bg-[#14110F] min-h-screen flex-1 flex flex-col transition-colors duration-250">
         {(activeTab === 'discover' || activeTab === 'menu') && (
           <DiscoverView
             menuItems={menuItems}
