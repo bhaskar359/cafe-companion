@@ -67,6 +67,67 @@ apiRouter.get('/menu/:id', async (req: Request, res: Response) => {
   }
 });
 
+// POST /api/v1/menu (Add new menu item to Cloud SQL / database)
+apiRouter.post('/menu', async (req: Request, res: Response) => {
+  try {
+    const { name, description, pricePaise, category, tags, imageUrl, roastOrigin, cuppingScore, isAvailable } = req.body;
+    if (!name || !description || typeof pricePaise !== 'number' || !category) {
+      res.status(400).json({
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'name, description, pricePaise, and category are required.'
+        }
+      });
+      return;
+    }
+
+    const created = await db.createMenuItem({
+      name,
+      description,
+      pricePaise,
+      category,
+      tags: tags || [],
+      isAvailable: isAvailable ?? true,
+      imageUrl,
+      roastOrigin,
+      cuppingScore
+    });
+
+    res.status(201).json({ item: created });
+  } catch (error) {
+    res.status(500).json({
+      error: {
+        code: 'CREATE_MENU_ITEM_FAILED',
+        message: (error as Error).message
+      }
+    });
+  }
+});
+
+// PATCH /api/v1/menu/:id (Update existing item in Cloud SQL / database)
+apiRouter.patch('/menu/:id', async (req: Request, res: Response) => {
+  try {
+    const updated = await db.updateMenuItem(req.params.id, req.body);
+    if (!updated) {
+      res.status(404).json({
+        error: {
+          code: 'NOT_FOUND',
+          message: `Menu item '${req.params.id}' was not found.`
+        }
+      });
+      return;
+    }
+    res.json({ item: updated });
+  } catch (error) {
+    res.status(500).json({
+      error: {
+        code: 'UPDATE_MENU_ITEM_FAILED',
+        message: (error as Error).message
+      }
+    });
+  }
+});
+
 // POST /api/v1/ai/recommendations
 apiRouter.post('/ai/recommendations', async (req: Request, res: Response) => {
   try {

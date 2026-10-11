@@ -71,6 +71,26 @@ export const api = {
     return data.item;
   },
 
+  async addMenuItem(item: Omit<MenuItem, 'id'>): Promise<MenuItem> {
+    const res = await fetch('/api/v1/menu', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(item)
+    });
+    const data = await handleResponse<{ item: MenuItem }>(res);
+    return data.item;
+  },
+
+  async updateMenuItem(id: string, updates: Partial<MenuItem>): Promise<MenuItem> {
+    const res = await fetch(`/api/v1/menu/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    });
+    const data = await handleResponse<{ item: MenuItem }>(res);
+    return data.item;
+  },
+
   async getRecommendations(query: string, dietary?: string, maxPricePaise?: number): Promise<RecommendationResponse> {
     if (USE_MOCK) {
       return getMockRecommendations(query);

@@ -584,6 +584,103 @@ class DatabaseRepository {
 
     return this.inMemoryOrders.get(orderIdOrNumber) || null;
   }
+
+  public async createMenuItem(data: Omit<MenuItem, 'id'>): Promise<MenuItem> {
+    const newItem: MenuItem = {
+      id: crypto.randomUUID(),
+      name: data.name,
+      description: data.description,
+      pricePaise: data.pricePaise,
+      category: data.category,
+      tags: data.tags || [],
+      isAvailable: data.isAvailable ?? true,
+      imageUrl: data.imageUrl,
+      roastOrigin: data.roastOrigin,
+      cuppingScore: data.cuppingScore
+    };
+
+    if (this.isPostgresConnected && this.pool) {
+      await this.pool.query(
+        `INSERT INTO menu_items (id, name, description, price_paise, category, tags, is_available, image_url, roast_origin, cupping_score)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [
+          newItem.id,
+          newItem.name,
+          newItem.description,
+          newItem.pricePaise,
+          newItem.category,
+          newItem.tags,
+          newItem.isAvailable,
+          newItem.imageUrl || null,
+          newItem.roastOrigin || null,
+          newItem.cuppingScore || null
+        ]
+      );
+    }
+
+    this.inMemoryMenuItems.unshift(newItem);
+    return newItem;
+  }
+
+  public async updateMenuItem(id: string, updates: Partial<MenuItem>): Promise<MenuItem | null> {
+    const existing = await this.getMenuItemById(id);
+    if (!existing) return null;
+
+    const updated: MenuItem = {
+      ...existing,
+      ...updates
+    };
+
+    if (this.isPostgresConnected && this.pool) {
+      await this.pool.query(
+        `UPDATE menu_items
+         SET name = $1, description = $2, price_paise = $3, category = $4, tags = $5, is_available = $6, image_url = $7, roast_origin = $8, cupping_score = $9
+         WHERE id = $10`,
+        [
+          updated.name,
+          updated.description,
+          updated.pricePaise,
+          updated.category,
+          updated.tags,
+          updated.isAvailable,
+          updated.imageUrl || null,
+          updated.roastOrigin || null,
+          updated.cuppingScore || null,
+          id
+        ]
+      );
+    }
+
+    const idx = this.inMemoryMenuItems.findIndex(i => i.id === id);
+    if (idx !== -1) {
+      this.inMemoryMenuItems[idx] = updated;
+    }
+
+    return updated;
+  }
+
+  public async updateOrderStatus(orderIdOrNumber: string, status: Order['status'], stage?: number, stageDescription?: string): Promise<Order | null> {
+    const existing = await this.getOrderById(orderIdOrNumber);
+    if (!existing) return null;
+
+    const updated: Order = {
+      ...existing,
+      status,
+      stage: stage ?? existing.stage,
+      stageDescription: stageDescription ?? existing.stageDescription
+    };
+
+    if (this.isPostgresConnected && this.pool) {
+      await this.pool.query(
+        `UPDATE orders SET status = $1 WHERE id = $2 OR order_number = $2`,
+        [status, orderIdOrNumber]
+      );
+    }
+
+    this.inMemoryOrders.set(existing.id, updated);
+    this.inMemoryOrders.set(existing.orderNumber, updated);
+    return updated;
+  }
 }
 
 export const db = new DatabaseRepository();
