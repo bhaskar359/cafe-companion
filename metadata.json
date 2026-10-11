@@ -1,0 +1,6 @@
+{
+  "name": "Café Companion",
+  "description": "Artisanal Indian specialty roastery with intelligent sensory concierge and smart ordering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
